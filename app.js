@@ -28,6 +28,33 @@ app.get("/restaurants", (req, res) => {
     })
 })
 
+app.get("/restaurants/new", (req, res) => {
+  return res.render("new");
+})
+
+app.post("/restaurants", (req, res) => {
+  const name = req.body.name;
+  const name_en = req.body.name_en;
+  const category = req.body.category;
+  const image = req.body.image;
+  const location = req.body.location;
+  const phone = req.body.phone;
+  const google_map = req.body.google_map;
+  const description = req.body.description;
+
+  return restlist.create({
+    name: name,
+    name_en: name_en,
+    category: category,
+    image: image,
+    location: location,
+    phone: phone,
+    google_map: google_map,
+    description: description
+  })
+    .then(() => res.redirect("/restaurants"))
+})
+
 app.listen(port, () => {
   console.log(`server run on http://localhost:${port}`);
 })
