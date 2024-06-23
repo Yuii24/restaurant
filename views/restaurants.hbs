@@ -1,0 +1,19 @@
+<a href="/restaurants/new">Create New</a>
+<ul>
+  {{#each rest}}
+  <ul>
+    {{this.name}}
+    <li>
+      {{this.category}}
+    </li>
+    <li>
+      <a href="/restaurants/{{ this.id }}">detail</a>
+      <a href="/restaurants/{{ this.id }}/edit">edit</a>
+      <form action="/restaurants/{{ this.id }}?_method=DELETE" method="post" style="display: inline;">
+        <button type="submit">delete</button>
+      </form>
+    </li>
+    <br>
+  </ul>
+  {{/each}}
+</ul>

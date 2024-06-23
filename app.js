@@ -12,6 +12,8 @@ app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
 app.set("views", "./views");
 
+app.use(express.urlencoded({ extended: true }));
+
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -21,8 +23,9 @@ app.get("/restaurants", (req, res) => {
   return restlist.findAll({
     raw: true
   })
-    .then((rest) => res.send(rest))
-  // .then((rest) => res.render("restaurants", { rest }))
+    .then((rest) => {
+      res.render("restaurants", { rest })
+    })
 })
 
 app.listen(port, () => {
