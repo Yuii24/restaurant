@@ -7,8 +7,8 @@
       {{this.category}}
     </li>
     <li>
-      <a href="/restaurants/{{ this.id }}">detail</a>
-      <a href="/restaurants/{{ this.id }}/edit">edit</a>
+      <a href="/restaurants/{{ this.id }}">詳細資訊</a>
+      <a href="/restaurants/{{ this.id }}/edit">修改資訊</a>
       <form action="/restaurants/{{ this.id }}?_method=DELETE" method="post" style="display: inline;">
         <button type="submit">delete</button>
       </form>
