@@ -51,6 +51,10 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       allowNull: false,
       type: DataTypes.STRING
+    },
+    rating: {
+      allowNull: false,
+      type: DataTypes.FLOAT
     }
   }, {
     sequelize,

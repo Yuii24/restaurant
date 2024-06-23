@@ -20,7 +20,8 @@ module.exports = {
           location: `${dataJR[i].location}`,
           phone: `${dataJR[i].phone}`,
           google_map: `${dataJR[i].google_map}`,
-          description: `${dataJR[i].description}`
+          description: `${dataJR[i].description}`,
+          rating: `${dataJR[i].rating}`
         }), {})
       );
       console.log('Data has been successfully inserted.');

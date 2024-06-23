@@ -12,13 +12,14 @@ const restlist = db.restaurants;
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
 app.set("views", "./views");
+app.use(express.static("public"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"))
 
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.redirect("restaurants");
 })
 
 app.get("/restaurants", (req, res) => {
@@ -43,6 +44,7 @@ app.post("/restaurants", (req, res) => {
   const phone = req.body.phone;
   const google_map = req.body.google_map;
   const description = req.body.description;
+  const rating = req.body.rating;
 
   return restlist.create({
     name: name,
@@ -52,7 +54,8 @@ app.post("/restaurants", (req, res) => {
     location: location,
     phone: phone,
     google_map: google_map,
-    description: description
+    description: description,
+    rating: rating
   })
     .then(() => res.redirect("/restaurants"))
     .catch((err) => console.log(err))
@@ -89,7 +92,8 @@ app.put("/restaurants/:id", (req, res) => {
     image: body.image,
     phone: body.phone,
     google_map: body.google_map,
-    description: body.description
+    description: body.description,
+    rating: body.rating
   }, { where: { id } })
     .then(() => res.redirect(`/restaurants/${id}`))
     .catch((err) => console.log(err))
