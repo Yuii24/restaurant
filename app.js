@@ -1,5 +1,6 @@
 const express = require("express");
 const { engine } = require("express-handlebars");
+const { Op } = require("sequelize");
 const methodOverride = require("method-override");
 const app = express();
 const port = 3000;
@@ -23,12 +24,47 @@ app.get("/", (req, res) => {
 })
 
 app.get("/restaurants", (req, res) => {
+  const keyword = req.query.keyword?.trim();
+  console.log("keyword", keyword);
+
+  const catches = keyword ? {
+    [Op.or]: [
+      { name: { [Op.like]: `%${keyword}%` } },
+      { category: { [Op.like]: `%${keyword}%` } }
+    ]
+  } : {}
+
   return restlist.findAll({
-    raw: true
+    raw: true,
+    where: catches
   })
     .then((rest) => {
-      res.render("restaurants", { rest })
+      res.render("restaurants", { rest, keyword })
     })
+
+  // let matches = {};
+
+  // if (keyword) {
+  //   matches = {
+  //     [Op.or]: [
+  //       { name: { [Op.like]: `%${keyword}%` } },
+  //       { category: { [Op.like]: `%${keyword}%` } }
+  //     ]
+  //   }
+  //   console.log("matches", matches);
+
+  //   return restlist.findAll({ raw: true, where: matches })
+  //     .then((rest) => {
+  //       res.render("restaurants", { rest, keyword })
+  //     })
+  // } else {
+  //   return restlist.findAll({
+  //     raw: true
+  //   })
+  //     .then((rest) => {
+  //       res.render("restaurants", { rest })
+  //     })
+  // }
 })
 
 app.get("/restaurants/new", (req, res) => {
