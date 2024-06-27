@@ -11,6 +11,15 @@
   </nav>
 
   <div class="banner"></div>
+
+  <style>
+    .d-flex-gap {
+      display: flex;
+      gap: 1rem;
+      /* 1rem = 16px，您可以根據需要調整這個值 */
+    }
+  </style>
+
 </header>
 
 <div class="container mt-5">
@@ -113,19 +122,25 @@
           value="{{rest.description}}"></textarea>
       </div>
     </div>
-    <div class="d-flex justify-content-end mb-3">
-    </div>
+</div>
+
+<div class="container mt-5">
+  <div class="d-flex justify-content-end mb-3 d-flex-gap">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="/restaurants" class="btn btn-secondary">Back</a>
+  </div>
+</div>
 
 
 
 
-    {{!-- <input type="text" placeholder="name" name="name" value="{{rest.name}}"><br><br>
-    <input type="text" placeholder="name_en" name="name_en" value="{{rest.name_en}}"><br><br>
-    <input type="text" placeholder="category" name="category" value="{{rest.category}}"><br><br>
-    <input type="text" placeholder="image" name="image" value="{{rest.image}}"><br><br>
-    <input type="text" placeholder="location" name="location" value="{{rest.location}}"><br><br>
-    <input type="text" placeholder="phone" name="phone" value="{{rest.phone}}"><br><br>
-    <input type="text" placeholder="google_map" name="google_map" value="{{rest.google_map}}"><br><br>
-    <input type="text" placeholder="description" name="description" value="{{rest.description}}"><br><br>
-    <input type="text" placeholder="rating" name="rating" value="{{rest.rating}}"><br><br>
-    <button type="submit">Save</button> --}}
+{{!-- <input type="text" placeholder="name" name="name" value="{{rest.name}}"><br><br>
+<input type="text" placeholder="name_en" name="name_en" value="{{rest.name_en}}"><br><br>
+<input type="text" placeholder="category" name="category" value="{{rest.category}}"><br><br>
+<input type="text" placeholder="image" name="image" value="{{rest.image}}"><br><br>
+<input type="text" placeholder="location" name="location" value="{{rest.location}}"><br><br>
+<input type="text" placeholder="phone" name="phone" value="{{rest.phone}}"><br><br>
+<input type="text" placeholder="google_map" name="google_map" value="{{rest.google_map}}"><br><br>
+<input type="text" placeholder="description" name="description" value="{{rest.description}}"><br><br>
+<input type="text" placeholder="rating" name="rating" value="{{rest.rating}}"><br><br>
+<button type="submit">Save</button> --}}
