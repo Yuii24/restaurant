@@ -39,12 +39,9 @@
       <div class="d-flex justify-content-end mb-3">
         <a href="/restaurants/new" class="btn btn-primary">Create New</a>
       </div>
-      <!-- 修改: 調整網格系統的行設置 -->
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
         {{#each rest}}
-        <!-- 修改: 添加 col 包裹每個卡片 -->
         <div class="col">
-          <!-- 修改: 添加 text-decoration-none 移除連結下劃線 -->
           <a href="/restaurants/{{this.id}}" class="text-secondary text-decoration-none">
             <div class="card mb-3">
               <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
@@ -57,20 +54,16 @@
                   {{this.rating}}
                   <i class="fas fa-star fa-xs"></i>
                 </span>
-                <!-- 新增的部分 -->
                 <div class="mt-2">
                   <a href="/restaurants/{{ this.id }}/edit">修改資訊</a> |
-                  <!-- 修改: 添加 btn btn-link p-0 使按鈕樣式一致 -->
                   <form action="/restaurants/{{ this.id }}?_method=DELETE" method="post" style="display: inline;">
                     <button type="submit" class="btn btn-link p-0">删除</button>
                   </form>
                 </div>
-                <!-- 新增部分结束 -->
               </div>
             </div>
           </a>
         </div>
-        <!-- 修改: 添加 col 包裹結束 -->
         {{/each}}
       </div>
     </div>
