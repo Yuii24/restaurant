@@ -6,7 +6,6 @@ const app = express();
 const port = 3000;
 
 const db = require("./models");
-const restaurants = require("./models/restaurants");
 const restlist = db.restaurants;
 
 
@@ -25,7 +24,6 @@ app.get("/", (req, res) => {
 
 app.get("/restaurants", (req, res) => {
   const keyword = req.query.keyword?.trim();
-  console.log("keyword", keyword);
 
   const catches = keyword ? {
     [Op.or]: [
