@@ -1,4 +1,6 @@
 const express = require("express");
+const flash = require("connect-flash");
+const session = require("express-session");
 const { engine } = require("express-handlebars");
 const { Op } = require("sequelize");
 const methodOverride = require("method-override");
@@ -16,6 +18,14 @@ app.use(express.static("public"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"))
+
+app.use(session({
+  secret: "ThisIsSecret",
+  resave: false,
+  saveUninitialized: false
+}))
+
+app.use(flash())
 
 
 app.get("/", (req, res) => {
@@ -37,7 +47,7 @@ app.get("/restaurants", (req, res) => {
     where: catches
   })
     .then((rest) => {
-      res.render("restaurants", { rest, keyword })
+      res.render("restaurants", { rest, keyword, message: req.flash("success") })
     })
 
   // let matches = {};
@@ -91,7 +101,10 @@ app.post("/restaurants", (req, res) => {
     description: description,
     rating: rating
   })
-    .then(() => res.redirect("/restaurants"))
+    .then(() => {
+      req.flash("success", "新增成功")
+      res.redirect("/restaurants")
+    })
     .catch((err) => console.log(err))
 })
 
