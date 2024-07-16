@@ -47,7 +47,12 @@ app.get("/restaurants", (req, res) => {
     where: catches
   })
     .then((rest) => {
-      res.render("restaurants", { rest, keyword, message: req.flash("success") })
+      res.render("restaurants", {
+        rest,
+        keyword,
+        message: req.flash("success"),
+        del_mes: req.flash("del_mes")
+      })
     })
 
   // let matches = {};
@@ -114,7 +119,7 @@ app.get("/restaurants/:id", (req, res) => {
   return restlist.findByPk(id, {
     raw: true
   })
-    .then((rest) => res.render("restaurant", { rest }))
+    .then((rest) => res.render("restaurant", { rest, edit_mes: req.flash("edit_mes") }))
     .catch((err) => console.log(err))
 })
 
@@ -142,7 +147,10 @@ app.put("/restaurants/:id", (req, res) => {
     description: body.description,
     rating: body.rating
   }, { where: { id } })
-    .then(() => res.redirect(`/restaurants/${id}`))
+    .then(() => {
+      req.flash("edit_mes", "修改成功")
+      res.redirect(`/restaurants/${id}`)
+    })
     .catch((err) => console.log(err))
 })
 
@@ -150,7 +158,10 @@ app.delete("/restaurants/:id", (req, res) => {
   const id = req.params.id
 
   return restlist.destroy({ where: { id } })
-    .then(() => res.redirect("/restaurants"))
+    .then(() => {
+      req.flash("del_mes", "刪除成功")
+      res.redirect("/restaurants")
+    })
 })
 
 app.listen(port, () => {
