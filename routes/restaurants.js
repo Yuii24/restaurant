@@ -6,7 +6,7 @@ const db = require("../models");
 const restlist = db.restaurants;
 
 
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
   try {
     const keyword = req.query.keyword?.trim();
 
@@ -25,21 +25,14 @@ router.get("/", (req, res) => {
         res.render("restaurants", {
           rest,
           keyword,
-          message: req.flash("success"),
-          del_mes: req.flash("del_mes"),
-          error: req.flash("error")
         })
       })
       .catch((error) => {
-        console.error(error)
-        req.flash("error", "操作失敗")
-        return res.redirect("back")
+        next(error)
       })
   }
   catch (error) {
-    console.error(error)
-    req.flash("error", "操作失敗")
-    return res.redirect("back")
+    next(error)
   }
 
 })
@@ -48,45 +41,38 @@ router.get("/new", (req, res) => {
   return res.render("new");
 })
 
-router.post("/", (req, res) => {
-  try {
-    // throw new Error("This is a test error.")
-    const name = req.body.name;
-    const name_en = req.body.name_en;
-    const category = req.body.category;
-    const image = req.body.image;
-    const location = req.body.location;
-    const phone = req.body.phone;
-    const google_map = req.body.google_map;
-    const description = req.body.description;
-    const rating = req.body.rating;
+router.post("/", (req, res, next) => {
+  // throw new Error("This is a test error.")
+  const name = req.body.name;
+  const name_en = req.body.name_en;
+  const category = req.body.category;
+  const image = req.body.image;
+  const location = req.body.location;
+  const phone = req.body.phone;
+  const google_map = req.body.google_map;
+  const description = req.body.description;
+  const rating = req.body.rating;
 
-    return restlist.create({
-      name: name,
-      name_en: name_en,
-      category: category,
-      image: image,
-      location: location,
-      phone: phone,
-      google_map: google_map,
-      description: description,
-      rating: rating
+  return restlist.create({
+    // name:null, //This is a error test
+    name: name,
+    name_en: name_en,
+    category: category,
+    image: image,
+    location: location,
+    phone: phone,
+    google_map: google_map,
+    description: description,
+    rating: rating
+  })
+    .then(() => {
+      req.flash("success", "新增成功")
+      res.redirect("/restaurants")
     })
-      .then(() => {
-        req.flash("success", "新增成功")
-        res.redirect("/restaurants")
-      })
-      .catch((error) => {
-        console.error(error)
-        req.flash("error", "操作失敗")
-        return res.redirect("back")
-      })
-  }
-  catch (error) {
-    console.error(error)
-    req.flash("error", "操作失敗")
-    return res.redirect("restaurants")
-  }
+    .catch((error) => {
+      error.errorMessage = "新增失敗"
+      next(error)
+    })
 })
 
 router.get("/:id", (req, res) => {
@@ -97,8 +83,6 @@ router.get("/:id", (req, res) => {
   })
     .then((rest) => res.render("restaurant", {
       rest,
-      edit_mes: req.flash("edit_mes"),
-      error: req.flash("error")
     }))
     .catch((err) => console.log(err))
 })

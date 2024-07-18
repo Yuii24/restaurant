@@ -3,12 +3,14 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const { engine } = require("express-handlebars");
 const methodOverride = require("method-override");
+const mesHandler = require("./middlewares/messages-handler")
 const app = express();
 const router = require("./routes");
 const port = 3000;
 
 
 const db = require("./models");
+const errorHandler = require("./middlewares/error-handler");
 const restlist = db.restaurants;
 
 
@@ -28,7 +30,11 @@ app.use(session({
 
 app.use(flash())
 
+app.use(mesHandler);
+
 app.use(router);
+
+app.use(errorHandler)
 
 
 app.listen(port, () => {
