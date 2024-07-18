@@ -99,3 +99,23 @@ header {
   }
 
 }
+
+#sus-mes {
+  color: green;
+  font-size: 30px;
+}
+
+#del-mes {
+  color: red;
+  font-size: 30px;
+}
+
+#error-mes {
+  color: red;
+  font-size: 30px;
+}
+
+#edit-mes {
+  color: green;
+  font-size: 30px;
+}

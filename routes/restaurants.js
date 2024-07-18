@@ -6,9 +6,34 @@ const db = require("../models");
 const restlist = db.restaurants;
 
 
+
 router.get("/", (req, res, next) => {
   try {
     const keyword = req.query.keyword?.trim();
+    const sort = req.query.sort || "name_asc"
+    console.log(sort);
+
+    let sort1 = 0
+    let sort2 = 0
+    let sort3 = 0
+    let sort4 = 0
+    
+    if (sort === 'name_asc') {
+      sort1 = 1
+    } else if (sort === 'name_desc') {
+      sort2 = 1
+    } else if (sort === 'category') {
+      sort3 = 1
+    } else if (sort === 'location') {
+      sort4 = 1
+    }
+
+    const sortOptions = {
+      name_asc: [['name', 'ASC']],
+      name_desc: [['name', 'DESC']],
+      category: [['category', 'ASC']],
+      location: [['location', 'ASC']]
+    }
 
     const catches = keyword ? {
       [Op.or]: [
@@ -19,12 +44,17 @@ router.get("/", (req, res, next) => {
 
     return restlist.findAll({
       raw: true,
-      where: catches
+      where: catches,
+      order: sortOptions[sort]
     })
       .then((rest) => {
         res.render("restaurants", {
           rest,
           keyword,
+          sort1,
+          sort2,
+          sort3,
+          sort4
         })
       })
       .catch((error) => {
