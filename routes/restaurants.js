@@ -17,7 +17,7 @@ router.get("/", (req, res, next) => {
     let sort2 = 0
     let sort3 = 0
     let sort4 = 0
-    
+
     if (sort === 'name_asc') {
       sort1 = 1
     } else if (sort === 'name_desc') {
