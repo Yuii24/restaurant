@@ -44,13 +44,15 @@ router.get("/", (req, res, next) => {
     } : {}
 
     return restlist.findAll({
+      offset: (page - 1) * limit,
+      limit,
       raw: true,
       where: catches,
       order: sortOptions[sort]
     })
       .then((rest) => {
         res.render("restaurants", {
-          rest: rest.slice((page - 1) * limit, page * limit),
+          rest,
           prev: page > 1 ? page - 1 : page,
           next: page + 1,
           page,
