@@ -11,7 +11,8 @@ router.get("/", (req, res, next) => {
   try {
     const keyword = req.query.keyword?.trim();
     const sort = req.query.sort || "name_asc"
-    console.log(sort);
+    const page = parseInt(req.query.page) || 1
+    const limit = 6;
 
     let sort1 = 0
     let sort2 = 0
@@ -49,7 +50,10 @@ router.get("/", (req, res, next) => {
     })
       .then((rest) => {
         res.render("restaurants", {
-          rest,
+          rest: rest.slice((page - 1) * limit, page * limit),
+          prev: page > 1 ? page - 1 : page,
+          next: page + 1,
+          page,
           keyword,
           sort1,
           sort2,
