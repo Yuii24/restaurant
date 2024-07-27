@@ -1,0 +1,61 @@
+<header>
+  <!-- navigation -->
+  <nav class="navbar navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png"
+          width="30" height="30" class="d-inline-block align-top" alt="好。吃">
+        登入
+      </a>
+    </div>
+  </nav>
+
+  <div class="banner"></div>
+
+  {{!-- <style>
+    .d-flex-gap {
+      display: flex;
+      gap: 1rem;
+      /* 1rem = 16px，根據需要調整這個值 */
+    }
+  </style> --}}
+</header>
+
+<h1 class="mb-1 restaurant-show-title">登入</h1>
+<div class="container">
+  <div class="d-flex">
+    {{> messages}}
+  </div>
+  <form action="/login" method="post">
+    {{!-- 電子信箱 --}}
+    <div class="row mb-3">
+      <label for="email" class="col-sm-4 col-form-label">請輸入電子信箱</label>
+      <div class="col-sm-8">
+        <input name="email" type="text" class="form-control" id="email" value="">
+      </div>
+    </div>
+
+    {{!-- 密碼 --}}
+    <div class="row mb-3">
+      <label for="password" class="col-sm-4 col-form-label">請輸入密碼</label>
+      <div class="col-sm-8">
+        <input name="password" type="password" class="form-control" id="password" value="">
+      </div>
+    </div>
+
+    {{!-- 說明 --}}
+    <div class="container mt-5">
+      <div class="d-flex justify-content-end mb-3 d-flex-gap">
+        <button type="submit" class="btn btn-primary me-5">Login</button>
+        <a href="/restaurants" class="btn btn-secondary">Back</a>
+      </div>
+    </div>
+  </form>
+  <form action="/login/facebook" method="get">
+    <div class="container">
+      <div class="d-flex justify-content-end mb-3 d-flex-gap">
+        <button type="submit" class="btn btn-primary">Facebook Login</button>
+      </div>
+    </div>
+  </form>
+</div>

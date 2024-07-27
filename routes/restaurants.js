@@ -13,6 +13,8 @@ router.get("/", (req, res, next) => {
     const sort = req.query.sort || "name_asc"
     const page = parseInt(req.query.page) || 1
     const limit = 6;
+    const userId = req.user.id;
+    console.log(userId)
 
     let sort1 = 0
     let sort2 = 0
@@ -44,10 +46,10 @@ router.get("/", (req, res, next) => {
     } : {}
 
     return restlist.findAll({
+      where: { ...catches, userId },
       offset: (page - 1) * limit,
       limit,
       raw: true,
-      where: catches,
       order: sortOptions[sort]
     })
       .then((rest) => {
@@ -88,6 +90,7 @@ router.post("/", (req, res, next) => {
   const google_map = req.body.google_map;
   const description = req.body.description;
   const rating = req.body.rating;
+  const userId = req.user.id
 
   return restlist.create({
     // name:null, //This is a error test
@@ -99,7 +102,8 @@ router.post("/", (req, res, next) => {
     phone: phone,
     google_map: google_map,
     description: description,
-    rating: rating
+    rating: rating,
+    userId: userId
   })
     .then(() => {
       req.flash("success", "新增成功")
@@ -111,66 +115,124 @@ router.post("/", (req, res, next) => {
     })
 })
 
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res, next) => {
   const id = req.params.id
+  const userId = req.user.id
 
   return restlist.findByPk(id, {
     raw: true
   })
-    .then((rest) => res.render("restaurant", {
-      rest,
-    }))
-    .catch((err) => console.log(err))
+    .then((rest) => {
+      if (!rest) {
+        req.flash("error", "資料不存在")
+        return res.redirect("/restaurants")
+      }
+      if (rest.userId !== userId) {
+        req.flash("error", "權限不足")
+        return res.redirect("/restaurants")
+      }
+      res.render("restaurant", { rest })
+    })
+    .catch((error) => {
+      error.errorMessage = "資料不存在"
+      next(error)
+    })
 })
 
-router.get("/:id/edit", (req, res) => {
+router.get("/:id/edit", (req, res, next) => {
   const id = req.params.id
+  const userId = req.user.id
 
   return restlist.findByPk(id, {
     raw: true
   })
-    .then((rest) => res.render("edit", { rest }))
-    .catch((err) => console.log(err))
+    .then((rest) => {
+      if (!rest) {
+        req.flash("error", "資料不存在")
+        return res.redirect("/restaurants")
+      }
+      if (rest.userId !== userId) {
+        req.flash("error", "權限不足")
+        return res.redirect("/restaurants")
+      }
+      res.render("edit", { rest })
+    })
+    .catch((error) => {
+      error.errorMessage = "資料不存在"
+      next(error)
+    })
 })
 
-router.put("/:id", (req, res) => {
+router.put("/:id", (req, res, next) => {
   try {
     const id = req.params.id
     const body = req.body
+    const userId = req.user.id
 
-    return restlist.update({
-      name: body.name,
-      name_en: body.name_en,
-      category: body.category,
-      image: body.image,
-      phone: body.phone,
-      google_map: body.google_map,
-      description: body.description,
-      rating: body.rating
-    }, { where: { id } })
-      .then(() => {
-        req.flash("edit_mes", "修改成功")
-        res.redirect(`/restaurants/${id}`)
+    return restlist.findByPk(id, {
+    })
+      .then((rest) => {
+        if (!rest) {
+          req.flash("error", "資料不存在")
+          return res.redirect("/restaurants")
+        }
+        if (rest.userId !== userId) {
+          req.flash("error", "權限不足")
+          return res.redirect("/restaurants")
+        }
+        return rest.update({
+          name: body.name,
+          name_en: body.name_en,
+          category: body.category,
+          image: body.image,
+          phone: body.phone,
+          google_map: body.google_map,
+          description: body.description,
+          rating: body.rating
+        }, { where: { id } })
+          .then(() => {
+            req.flash("edit_mes", "修改成功")
+            res.redirect(`/restaurants/${id}`)
+          })
+          .catch((error) => {
+            console.error(error)
+            req.flash("error", "資料更新失敗")
+            return res.redirect(`/restaurants/${id}`)
+          })
       })
-      .catch((error) => {
-        console.error(error)
-        req.flash("error", "操作失敗")
-        return res.redirect(`/restaurants/${id}`)
-      })
-  } catch (error) {
-    console.error(error)
-    req.flash("error", "操作失敗")
-    return res.redirect(`/restaurants/${id}`)
+  }
+  catch (error) {
+    error.errorMessage = "資料更新失敗"
+    next(error)
   }
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res, next) => {
   const id = req.params.id
+  const userId = req.user.id
 
-  return restlist.destroy({ where: { id } })
-    .then(() => {
-      req.flash("del_mes", "刪除成功")
-      res.redirect("/restaurants")
+
+  return restlist.findByPk(id, {
+  })
+    .then((rest) => {
+      if (!rest) {
+        req.flash("error", "資料不存在")
+        return res.redirect("/restaurants")
+      }
+      if (rest.userId !== userId) {
+        req.flash("error", "權限不足")
+        return res.redirect("/restaurants")
+      }
+      return restlist.destroy({ where: { id } })
+        .then(() => {
+          req.flash("del_mes", "刪除成功")
+          res.redirect("/restaurants")
+        })
+    })
+    .catch((error) => {
+      console.error(error)
+      req.flash("error", "資料更新失敗")
+      return res.redirect(`/restaurants/${id}`)
     })
 })
 

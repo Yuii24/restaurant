@@ -1,17 +1,16 @@
+if (process.env.NODE_ENV === "development") {
+  require("dotenv").config();
+}
 const express = require("express");
 const flash = require("connect-flash");
 const session = require("express-session");
+const passport = require("./config/passport")
 const { engine } = require("express-handlebars");
 const methodOverride = require("method-override");
 const mesHandler = require("./middlewares/messages-handler")
 const app = express();
 const router = require("./routes");
 const port = 3000;
-
-if (process.env.NODE_ENV === "development") {
-  require("dotenv").config();
-}
-
 
 const db = require("./models");
 const errorHandler = require("./middlewares/error-handler");
@@ -23,6 +22,7 @@ app.set("view engine", ".hbs");
 app.set("views", "./views");
 app.use(express.static("public"));
 
+
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"))
 
@@ -33,6 +33,12 @@ app.use(session({
 }))
 
 app.use(flash())
+
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+
 
 app.use(mesHandler);
 
