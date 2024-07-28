@@ -2,6 +2,7 @@
 This Restaurants-List can share restaurants informatiuon for you.
 
 <h2>Features</h2>
+<li>Register and Login user</li>
 <li>Display all restaurants in the list</li>
 <li>Search restaurants by name or category</li>
 <li>Add new restaurant that you like</li>
