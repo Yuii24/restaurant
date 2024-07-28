@@ -16,19 +16,19 @@ router.get("/", (req, res, next) => {
     const userId = req.user.id;
     console.log(userId)
 
-    let sort1 = 0
-    let sort2 = 0
-    let sort3 = 0
-    let sort4 = 0
+    let sortAz = 0
+    let sortZa = 0
+    let sortCa = 0
+    let sortLo = 0
 
     if (sort === 'name_asc') {
-      sort1 = 1
+      sortAz = 1
     } else if (sort === 'name_desc') {
-      sort2 = 1
+      sortZa = 1
     } else if (sort === 'category') {
-      sort3 = 1
+      sortCa = 1
     } else if (sort === 'location') {
-      sort4 = 1
+      sortLo = 1
     }
 
     const sortOptions = {
@@ -59,10 +59,10 @@ router.get("/", (req, res, next) => {
           next: page + 1,
           page,
           keyword,
-          sort1,
-          sort2,
-          sort3,
-          sort4
+          sortAz,
+          sortZa,
+          sortCa,
+          sortLo
         })
       })
       .catch((error) => {

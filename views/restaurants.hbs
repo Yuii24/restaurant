@@ -46,10 +46,10 @@
           <div class="d-flex justify-content-end me-3">
             <form action="/restaurants" method="GET" style="display: inline;">
               <select class="form-select" name="sort" aria-label="Default select example" onchange="this.form.submit()">
-                <option value="name_asc" {{#if sort1}} selected {{/if}}>A -> Z</option>
-                <option value="name_desc" {{#if sort2}} selected {{/if}}>Z -> A</option>
-                <option value="category" {{#if sort3}} selected {{/if}}>類別</option>
-                <option value="location" {{#if sort4}} selected {{/if}}>地區</option>
+                <option value="name_asc" {{#if sortAz}} selected {{/if}}>A -> Z</option>
+                <option value="name_desc" {{#if sortZa}} selected {{/if}}>Z -> A</option>
+                <option value="category" {{#if sortCa}} selected {{/if}}>類別</option>
+                <option value="location" {{#if sortLo}} selected {{/if}}>地區</option>
               </select>
             </form>
           </div>
